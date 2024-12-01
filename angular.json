@@ -107,5 +107,8 @@
       }
     }
   },
-  "defaultProject": "blog-uoc-project-front"
+  "defaultProject": "blog-uoc-project-front",
+  "cli": {
+    "analytics": false
+  }
 }
