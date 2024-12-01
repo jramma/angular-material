@@ -14,6 +14,8 @@ import { HomeComponent } from './components/home/home.component';
 import { PostFormComponent } from './components/post-form/post-form.component';
 import { PostsListComponent } from './components/posts-list/posts-list.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { MatTableModule } from '@angular/material/table';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [
@@ -24,6 +26,8 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
     DashboardComponent,
   ],
   imports: [
+    MatTableModule,
+    MatIconModule,
     CommonModule,
     ReactiveFormsModule,
     MatFormFieldModule, // Para los contenedores de entrada de texto

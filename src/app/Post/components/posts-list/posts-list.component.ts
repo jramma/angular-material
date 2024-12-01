@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
+import { MatTableDataSource } from '@angular/material/table';
 import { AppState } from 'src/app/app.reducers';
 import * as PostsAction from '../../actions';
 import { PostDTO } from '../../models/post.dto';
@@ -11,23 +12,37 @@ import { PostDTO } from '../../models/post.dto';
   styleUrls: ['./posts-list.component.scss'],
 })
 export class PostsListComponent {
-  posts: PostDTO[];
+  displayedColumns: string[] = [
+    'title',
+    'description',
+    'num_likes',
+    'num_dislikes',
+    'publication_date',
+    'categories',
+    'userAlias',
+    'actions',
+  ];
+  dataSource: MatTableDataSource<PostDTO>;
+
   private userId: string;
 
   constructor(private router: Router, private store: Store<AppState>) {
     this.userId = '';
-    this.posts = new Array<PostDTO>();
+    this.dataSource = new MatTableDataSource<PostDTO>([]);
 
+    // Suscribirse al store para obtener el userId
     this.store.select('auth').subscribe((auth) => {
-      if (auth.credentials.user_id) {
+      if (auth.credentials?.user_id) {
         this.userId = auth.credentials.user_id;
       }
     });
 
-    this.store.select('posts').subscribe((posts) => {
-      this.posts = posts.posts;
+    // Suscribirse al store de posts para actualizar la tabla
+    this.store.select('posts').subscribe((postsState) => {
+      this.dataSource.data = postsState.posts || [];
     });
 
+    // Cargar los posts al inicio
     this.loadPosts();
   }
 
@@ -48,10 +63,9 @@ export class PostsListComponent {
   }
 
   deletePost(postId: string): void {
-    // show confirmation popup
-    let result = confirm('Confirm delete post with id: ' + postId + ' .');
-    if (result) {
-      this.store.dispatch(PostsAction.deletePost({ postId: postId }));
+    const confirmDelete = confirm(`Confirm delete post with ID: ${postId}.`);
+    if (confirmDelete) {
+      this.store.dispatch(PostsAction.deletePost({ postId }));
     }
   }
 }
