@@ -8,15 +8,17 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatTableModule } from '@angular/material/table';
+import { MatIconModule } from '@angular/material/icon';
+import { MatCardModule } from '@angular/material/card';
+import { NgChartsModule } from 'ng2-charts';
 
 import { FormatDatePipe } from '../Shared/Pipes/format-date.pipe';
 import { HomeComponent } from './components/home/home.component';
 import { PostFormComponent } from './components/post-form/post-form.component';
 import { PostsListComponent } from './components/posts-list/posts-list.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { MatTableModule } from '@angular/material/table';
-import { MatIconModule } from '@angular/material/icon';
-
+import { CardComponent } from '../Shared/Components/card/card.component';
 @NgModule({
   declarations: [
     PostsListComponent,
@@ -24,19 +26,25 @@ import { MatIconModule } from '@angular/material/icon';
     HomeComponent,
     FormatDatePipe,
     DashboardComponent,
+    CardComponent,
   ],
   imports: [
-    MatTableModule,
-    MatIconModule,
     CommonModule,
     ReactiveFormsModule,
-    MatFormFieldModule, // Para los contenedores de entrada de texto
-    MatInputModule, // Para los inputs
-    MatButtonModule, // Para los botones
-    MatSelectModule, // Para los selectores de categorías
-    MatDatepickerModule, // Para el selector de fechas
-    MatNativeDateModule, // Necesario para que funcione MatDatepicker
-    MatProgressSpinnerModule, // Para mostrar el spinner de carga
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatSelectModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatProgressSpinnerModule,
+    MatTableModule,
+    MatIconModule,
+    MatCardModule,
+    NgChartsModule,
+  ],
+  exports: [
+    DashboardComponent, // Exporta si se usará fuera de este módulo
   ],
 })
 export class PostModule {}

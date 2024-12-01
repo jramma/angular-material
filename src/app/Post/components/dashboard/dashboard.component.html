@@ -1,4 +1,32 @@
-<div *ngIf="posts">
-  <p>Num likes: {{ numLikes }}</p>
-  <p>Num dislikes: {{ numDislikes }}</p>
-</div>
+<section class="container mx-auto p-6 bg-dark-gray text-white">
+  <h2 class="text-2xl font-bold mb-4">Dashboard</h2>
+
+  <div class="mb-6">
+    <p>Total Likes: {{ totalLikes }}</p>
+    <p>Total Dislikes: {{ totalDislikes }}</p>
+  </div>
+
+  <div class="mt-4">
+    <h3 class="text-xl font-bold mb-4">All Posts</h3>
+    <div
+      class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
+    >
+      <div
+        *ngFor="let post of posts"
+        class="mb-4 p-4 border border-gray-600 rounded-md shadow-sm bg-dark-slight"
+      >
+        <h3 class="text-lg font-semibold text-blue-400">{{ post.title }}</h3>
+        <p class="text-gray-400">{{ post.description }}</p>
+
+        <div class="chart-container mt-4">
+          <canvas
+            baseChart
+            [data]="generateChartData(post)"
+            [options]="barChartOptions"
+            chartType="bar"
+          ></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

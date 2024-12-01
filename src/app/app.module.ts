@@ -29,6 +29,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { FormsModule } from '@angular/forms';
 
 import { MatCardModule } from '@angular/material/card';
+import { NgChartsModule } from 'ng2-charts';
 @NgModule({
   declarations: [AppComponent, HeaderComponent],
 
@@ -66,6 +67,7 @@ import { MatCardModule } from '@angular/material/card';
       logOnly: environment.production,
     }),
     BrowserAnimationsModule,
+    NgChartsModule,
   ],
   providers: [
     {
