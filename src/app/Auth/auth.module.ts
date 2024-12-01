@@ -7,10 +7,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { LoginComponent } from './components/login.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [LoginComponent],
   imports: [
+    MatProgressSpinnerModule,
     CommonModule,
     ReactiveFormsModule,
     BrowserAnimationsModule, // Obligatorio para Angular Material

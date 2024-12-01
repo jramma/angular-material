@@ -1,6 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { FormControl } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
+import { Store } from '@ngrx/store';
+import { AppState } from 'src/app/app.reducers';
+import * as AuthAction from '../actions';
+import { AuthDTO } from '../models/auth.dto';
 
 @Component({
   selector: 'app-login',
@@ -8,30 +16,61 @@ import { FormControl } from '@angular/forms';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
+  email: FormControl;
+  password: FormControl;
   loginForm: FormGroup;
 
-  constructor(private formBuilder: FormBuilder) {
+  // Agregar estas propiedades
+  isLoading: boolean = false;
+  loginError: string | null = null;
+
+  constructor(
+    private formBuilder: FormBuilder,
+    private store: Store<AppState>
+  ) {
+    this.email = new FormControl('', [
+      Validators.required,
+      Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$'),
+    ]);
+
+    this.password = new FormControl('', [
+      Validators.required,
+      Validators.minLength(8),
+      Validators.maxLength(16),
+    ]);
+
     this.loginForm = this.formBuilder.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(16)]],
+      email: this.email,
+      password: this.password,
     });
   }
 
   ngOnInit(): void {}
-
-  get email(): FormControl {
-    return this.loginForm.get('email') as FormControl;
-  }
-
-  get password(): FormControl {
-    return this.loginForm.get('password') as FormControl;
-  }
 
   login(): void {
     if (this.loginForm.invalid) {
       return;
     }
 
-    console.log(this.loginForm.value);
+    this.isLoading = true;
+    this.loginError = null;
+
+    const credentials: AuthDTO = {
+      email: this.email.value,
+      password: this.password.value,
+      user_id: '',
+      access_token: '',
+    };
+
+    // Despachar la acción de login al store
+    this.store.dispatch(AuthAction.login({ credentials }));
+
+    // Simular suscripción o efecto para manejar loginSuccess o loginFailure
+    this.store.select('auth').subscribe((state) => {
+      if (state.error) {
+        this.loginError = 'Login failed. Please try again.';
+      }
+      this.isLoading = false;
+    });
   }
 }

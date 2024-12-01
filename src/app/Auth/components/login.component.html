@@ -1,9 +1,13 @@
 <section class="container">
+  <!-- Feedback Message -->
   <div class="py-6 flex justify-center text-center">
-    <p id="loginFeedback" class="text-red-500"></p>
+    <p *ngIf="loginError" id="loginFeedback" class="text-red-500">{{ loginError }}</p>
   </div>
+
   <div class="w-full max-w-md mx-auto bg-dark-slight rounded-lg shadow-md p-6">
     <h1 class="text-2xl font-bold text-center text-white mb-4">Login</h1>
+
+    <!-- Formulario -->
     <form [formGroup]="loginForm" (ngSubmit)="login()" class="space-y-4">
       <!-- Email -->
       <mat-form-field appearance="fill" class="w-full">
@@ -32,7 +36,6 @@
         <mat-error *ngIf="password.invalid && (password.touched || password.dirty)">
           <span *ngIf="password.errors?.required">Password is required.</span>
           <span *ngIf="password.errors?.minlength">Password must be at least 8 characters long.</span>
-          <span *ngIf="password.errors?.maxlength">Password cannot exceed 16 characters.</span>
         </mat-error>
       </mat-form-field>
 
@@ -41,10 +44,16 @@
         mat-raised-button
         color="primary"
         type="submit"
-        [disabled]="loginForm.invalid"
+        [disabled]="loginForm.invalid || isLoading"
         class="w-full"
       >
-        Login
+        <mat-progress-spinner
+          *ngIf="isLoading"
+          diameter="20"
+          color="accent"
+          mode="indeterminate"
+        ></mat-progress-spinner>
+        <span *ngIf="!isLoading">Login</span>
       </button>
     </form>
   </div>
