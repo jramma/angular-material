@@ -10,7 +10,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/app.reducers';
 import * as UserAction from '../../actions';
 import { UserDTO } from '../../models/user.dto';
-
+import { Observable } from 'rxjs';
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
@@ -21,6 +21,7 @@ export class RegisterComponent implements OnInit {
 
   registerForm: FormGroup;
   isValidForm: boolean | null;
+  loading$: Observable<boolean>;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -65,6 +66,7 @@ export class RegisterComponent implements OnInit {
         Validators.maxLength(16),
       ]),
     });
+    this.loading$ = this.store.select((state) => state.user.loading);
   }
 
   ngOnInit(): void {}
