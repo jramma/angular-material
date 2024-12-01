@@ -7,9 +7,15 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatTableModule } from '@angular/material/table';
+import { MatIconModule } from '@angular/material/icon';
+
 @NgModule({
   declarations: [CategoriesListComponent, CategoryFormComponent],
   imports: [
+    MatTableModule,
+    MatButtonModule,
+    MatIconModule,
     CommonModule,
     ReactiveFormsModule,
     MatFormFieldModule,

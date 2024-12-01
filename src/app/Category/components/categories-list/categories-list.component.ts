@@ -4,6 +4,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/app.reducers';
 import * as CategoriesAction from '../../actions';
 import { CategoryDTO } from '../../models/category.dto';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-categories-list',
@@ -11,23 +12,34 @@ import { CategoryDTO } from '../../models/category.dto';
   styleUrls: ['./categories-list.component.scss'],
 })
 export class CategoriesListComponent {
-  categories: CategoryDTO[];
+  displayedColumns: string[] = [
+    'id',
+    'title',
+    'description',
+    'css_color',
+    'actions',
+  ];
+  dataSource: MatTableDataSource<CategoryDTO>;
 
   private userId: string;
+
   constructor(private router: Router, private store: Store<AppState>) {
     this.userId = '';
-    this.categories = new Array<CategoryDTO>();
+    this.dataSource = new MatTableDataSource<CategoryDTO>([]);
 
+    // Obtener userId del store
     this.store.select('auth').subscribe((auth) => {
-      if (auth.credentials.user_id) {
+      if (auth.credentials?.user_id) {
         this.userId = auth.credentials.user_id;
       }
     });
 
+    // Suscribirse al estado de categorías y actualizar la tabla
     this.store.select('categories').subscribe((categories) => {
-      this.categories = categories.categories;
+      this.dataSource.data = categories.categories || [];
     });
 
+    // Cargar categorías al inicio
     this.loadCategories();
   }
 
@@ -48,16 +60,11 @@ export class CategoriesListComponent {
   }
 
   deleteCategory(categoryId: string): void {
-    let errorResponse: any;
-
-    // show confirmation popup
-    let result = confirm(
-      'Confirm delete category with id: ' + categoryId + ' .'
+    const confirmDelete = confirm(
+      `Confirm delete category with ID: ${categoryId}.`
     );
-    if (result) {
-      this.store.dispatch(
-        CategoriesAction.deleteCategory({ categoryId: categoryId })
-      );
+    if (confirmDelete) {
+      this.store.dispatch(CategoriesAction.deleteCategory({ categoryId }));
     }
   }
 }
