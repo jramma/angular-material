@@ -1,14 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
-import { Store } from '@ngrx/store';
-import { AppState } from 'src/app/app.reducers';
-import * as AuthAction from '../actions';
-import { AuthDTO } from '../models/auth.dto';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
@@ -16,41 +8,30 @@ import { AuthDTO } from '../models/auth.dto';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
-  email: FormControl;
-  password: FormControl;
   loginForm: FormGroup;
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private store: Store<AppState>
-  ) {
-    this.email = new FormControl('', [
-      Validators.required,
-      Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$'),
-    ]);
-
-    this.password = new FormControl('', [
-      Validators.required,
-      Validators.minLength(8),
-      Validators.maxLength(16),
-    ]);
-
+  constructor(private formBuilder: FormBuilder) {
     this.loginForm = this.formBuilder.group({
-      email: this.email,
-      password: this.password,
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(16)]],
     });
   }
 
   ngOnInit(): void {}
 
-  login(): void {
-    const credentials: AuthDTO = {
-      email: this.email.value,
-      password: this.password.value,
-      user_id: '',
-      access_token: '',
-    };
+  get email(): FormControl {
+    return this.loginForm.get('email') as FormControl;
+  }
 
-    this.store.dispatch(AuthAction.login({ credentials }));
+  get password(): FormControl {
+    return this.loginForm.get('password') as FormControl;
+  }
+
+  login(): void {
+    if (this.loginForm.invalid) {
+      return;
+    }
+
+    console.log(this.loginForm.value);
   }
 }

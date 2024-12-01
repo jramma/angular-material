@@ -16,11 +16,37 @@ import { FooterComponent } from './Shared/Components/footer/footer.component';
 import { HeaderComponent } from './Shared/Components/header/header.component';
 import { AuthInterceptorService } from './Shared/Services/auth-interceptor.service';
 import { UserModule } from './User/user.module';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatIconModule } from '@angular/material/icon';
+import { MatSelectModule } from '@angular/material/select';
+import { MatTableModule } from '@angular/material/table';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'; // Importa este módulo
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { FormsModule } from '@angular/forms';
 
+import { MatCardModule } from '@angular/material/card';
 @NgModule({
   declarations: [AppComponent, HeaderComponent, FooterComponent],
 
   imports: [
+    MatCardModule,
+    MatToolbarModule,
+    MatProgressSpinnerModule,
+    BrowserAnimationsModule,
+    MatTableModule,
+    MatSelectModule,
+    MatIconModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    FormsModule,
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
@@ -40,6 +66,7 @@ import { UserModule } from './User/user.module';
       maxAge: 25,
       logOnly: environment.production,
     }),
+    BrowserAnimationsModule,
   ],
   providers: [
     {

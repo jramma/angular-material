@@ -1,44 +1,51 @@
-<div style="margin-left: auto; margin-right: auto">
-  <p id="loginFeedback"></p>
-</div>
-<div>
-  <h1>Login</h1>
-  <form [formGroup]="loginForm" (ngSubmit)="login()">
-    <div>
-      <label for="email">Email: </label>
-      <input type="email" [formControl]="email" />
-    </div>
+<section class="container">
+  <div class="py-6 flex justify-center text-center">
+    <p id="loginFeedback" class="text-red-500"></p>
+  </div>
+  <div class="w-full max-w-md mx-auto bg-dark-slight rounded-lg shadow-md p-6">
+    <h1 class="text-2xl font-bold text-center text-white mb-4">Login</h1>
+    <form [formGroup]="loginForm" (ngSubmit)="login()" class="space-y-4">
+      <!-- Email -->
+      <mat-form-field appearance="fill" class="w-full">
+        <mat-label>Email</mat-label>
+        <input
+          matInput
+          type="email"
+          [formControl]="email"
+          placeholder="Enter your email"
+        />
+        <mat-error *ngIf="email.invalid && (email.touched || email.dirty)">
+          <span *ngIf="email.errors?.required">Email is required.</span>
+          <span *ngIf="email.errors?.email">Email must be a valid format.</span>
+        </mat-error>
+      </mat-form-field>
 
-    <div>
-      <label for="password">Password: </label>
-      <input type="password" [formControl]="password" />
-    </div>
+      <!-- Password -->
+      <mat-form-field appearance="fill" class="w-full">
+        <mat-label>Password</mat-label>
+        <input
+          matInput
+          type="password"
+          [formControl]="password"
+          placeholder="Enter your password"
+        />
+        <mat-error *ngIf="password.invalid && (password.touched || password.dirty)">
+          <span *ngIf="password.errors?.required">Password is required.</span>
+          <span *ngIf="password.errors?.minlength">Password must be at least 8 characters long.</span>
+          <span *ngIf="password.errors?.maxlength">Password cannot exceed 16 characters.</span>
+        </mat-error>
+      </mat-form-field>
 
-    <button type="submit" [disabled]="!loginForm.valid">Login</button>
-  </form>
-</div>
-
-<div *ngIf="email.errors">
-  <span
-    style="color: red"
-    *ngIf="email.errors && (email.touched || email.dirty)"
-  >
-    <span *ngIf="email.errors.required">Email is required</span>
-    <div *ngIf="email.errors.pattern">Email not a valid format.</div>
-  </span>
-</div>
-
-<div *ngIf="password.errors">
-  <span
-    style="color: red"
-    *ngIf="password.errors && (password.touched || password.dirty)"
-  >
-    <span *ngIf="password.errors.required">Password is required</span>
-    <span *ngIf="password.errors.minlength"
-      >Password must be greater tha 8 characters</span
-    >
-    <span *ngIf="password.errors.maxlength"
-      >Password can be max 16 characters long</span
-    >
-  </span>
-</div>
+      <!-- Submit Button -->
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [disabled]="loginForm.invalid"
+        class="w-full"
+      >
+        Login
+      </button>
+    </form>
+  </div>
+</section>
